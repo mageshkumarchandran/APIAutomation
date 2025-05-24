@@ -1,0 +1,90 @@
+package org.booker.api.booker.utils;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.response.Response;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.Properties;
+
+public class Utility {
+    private static Properties properties = new Properties();
+    private LocalDate date;
+
+
+    static {
+        try {
+            FileInputStream fis = new FileInputStream("src/test/resources/config.properties");
+            properties.load(fis);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load config.properties file", e);
+        }
+    }
+
+    public static String getProperty(String key) {
+        return properties.getProperty(key);
+    }
+
+    public static String getAuthToken(Response response) {
+
+        return response.getBody().jsonPath().get("token");
+    }
+
+    public Map<String, Object> returnJsonAsMap() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        Map<String, Object> requestMap = mapper.readValue(
+                new File(getProperty("json.file.path")),
+                new TypeReference<>() {
+                }
+        );
+
+        return requestMap;
+    }
+    public Map<String, Object> updateRecordInBookingReq(Map<String, Object> jsonMap, String key, String value) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Object parsedValue = null;
+        try {
+            parsedValue = mapper.readValue(value, Object.class);
+            jsonMap.put(key, parsedValue);
+        } catch (Exception e) {
+            jsonMap.put(key, value);
+        }
+        return jsonMap;
+    }
+
+    public static Map<String, Object> deleteRecordInBookingReq(Map<String, Object> jsonMap, String key) throws JsonProcessingException {
+        jsonMap.remove(key);
+        return jsonMap;
+    }
+    public Map<String, Object> updateDateInBookingReq(Map<String, Object> jsonMap, String type) {
+        Map<String, Object> bookingDates = (Map<String, Object>) jsonMap.get("bookingdates");
+        if (type.equalsIgnoreCase("checkin"))
+            date = LocalDate.now();
+        else
+            date = LocalDate.now().plusDays(3);
+
+        bookingDates.put(type, date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        return bookingDates;
+
+    }
+    public static Map<String, Object> removeBookingIDAndObject(Map<String, Object> jsonRecord) {
+
+        jsonRecord.remove("bookingid");
+        Object bookingObj = jsonRecord.remove("booking");
+
+        if (bookingObj instanceof Map) {
+            Map<String, Object> userMap = (Map<String, Object>) bookingObj;
+            for (Map.Entry<String, Object> entry : userMap.entrySet()) {
+                jsonRecord.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return jsonRecord;
+    }
+}
+
