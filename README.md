@@ -12,7 +12,7 @@
      * Jenkins - 2.462(CI Integration)
 ### How to run tests
     * commandline(project folder):
-         mvn clean test.
+         mvn clean test
 
     * To run Specific test case based on tag:
         for ex:- mvn clean test -D cucumber.filter.tags="@booker"
