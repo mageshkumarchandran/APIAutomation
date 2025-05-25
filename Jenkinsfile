@@ -2,22 +2,17 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('test') {
             steps {
-                checkout scm
+                bat 'mvn clean test'
             }
         }
-
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+   }
+   post {
+    always {
+        cucumber buildStatus: 'UNSTABLE',
+                 fileIncludePattern: '**/cucumber.json',
+                 jsonReportDirectory: 'target'
     }
+}
 }

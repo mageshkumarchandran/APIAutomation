@@ -5,13 +5,11 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.booker.api.booker.interfaces.ApiFlows;
 import org.booker.api.booker.utils.Utility;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class BookerRequests implements ApiFlows {
     private final RequestSpecification requestSpec;
-
     public BookerRequests() {
         RestAssured.baseURI = Utility.getProperty("base.url");
         RestAssured.basePath = Utility.getProperty("path");
@@ -54,11 +52,13 @@ public class BookerRequests implements ApiFlows {
     }
     @Override
     public Response delete(String id,String token) {
+        if(token!=null && !id.isEmpty() )
+            requestSpec.cookie("token",token);
         return requestSpec
-                .cookie("token",token)
                 .when()
                 .delete(Utility.getProperty("base.url")+Utility.getProperty("path")+"/"+id)
                 .then()
+                .log().cookies()
                 .extract().response();
     }
 

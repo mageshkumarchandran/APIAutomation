@@ -9,31 +9,25 @@ import io.restassured.response.Response;
 import org.booker.api.booker.requests.BookerRequests;
 import org.booker.api.booker.requests.Validator;
 import org.booker.api.booker.utils.Utility;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
 public class BookerSteps {
     private final Utility utility;
     private final BookerRequests bookerRequests;
     private final Validator validator;
-
     private Map<String, Object> requestData;
     private Response responseBody;
-
 
     public BookerSteps(Utility utility, BookerRequests bookerRequests, Validator validator) {
         this.utility = utility;
         this.bookerRequests = bookerRequests;
         this.validator = validator;
     }
-
     @Given("Read the request json file")
     public void read_the_request_json_file() throws IOException {
         requestData = utility.returnJsonAsMap();
     }
-
     @When("Trigger a {string} request.")
     public void trigger_a_request(String type) throws JsonProcessingException {
         if (type.equalsIgnoreCase("post"))
@@ -42,11 +36,12 @@ public class BookerSteps {
             responseBody = bookerRequests.post(requestData);
 
         else if (type.contains("invalidToken"))
-            responseBody = bookerRequests.delete("10", "invalid");
+            responseBody = bookerRequests.delete("7", "invalid");
+        else if (type.contains("noToken"))
+            responseBody = bookerRequests.delete("", "invalid");
         else
             responseBody = bookerRequests.get("");
     }
-
     @When("Trigger a {string} request with id {string}")
     public void trigger_a_request_with(String type, String id) {
         String token = utility.getAuthToken(bookerRequests.generateToken());
@@ -58,14 +53,11 @@ public class BookerSteps {
             responseBody = bookerRequests.delete(id, token);
 
     }
-
     @When("Trigger a delete request with id {int}")
     public void trigger_a_delete_request_with(String id) {
         String token = utility.getAuthToken(bookerRequests.generateToken());
         responseBody = bookerRequests.delete(id, token);
-
     }
-
     @Then("Verify the status code is {int}")
     public void verify_the_status_code_is(Integer statusCode) {
 
@@ -92,19 +84,17 @@ public class BookerSteps {
         validator.assertListNotNull(responseBody);
     }
 
-
     @When("Update the fields in the request body")
     public void update_the_field_in_the_request_body_to(DataTable dataTable) throws JsonProcessingException {
         List<Map<String, String>> values = dataTable.asMaps(String.class, String.class);
         for (Map<String, String> value : values) {
             requestData = utility.updateRecordInBookingReq(requestData, value.get("key"), value.get("value"));
         }
-//        requestData = utility.updateRecordInBookingReq(requestData, key, value);
     }
 
-
     @Then("Verify the {string} field is not null in the response")
-    public void verify_the_field_is_not_null_in_the_response(String string) {
+    public void verify_the_field_is_not_null_in_the_response(String key) {
+        validator.assertKeyNotNull(responseBody,key);
     }
 
 
