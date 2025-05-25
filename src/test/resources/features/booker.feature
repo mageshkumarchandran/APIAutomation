@@ -22,10 +22,10 @@ Feature: Booker API End point validations
 
   @test_3 @delete
   Scenario: Trigger booker DELETE request and validate deletion
-    When Trigger a "delete" request with id "97"
+    When Trigger a "delete" request with id "87"
     Then Verify the status code is 201
     #This step is to verify record is deleted
-    When Trigger a "get" request with id "97"
+    When Trigger a "get" request with id "87"
     Then Verify the status code is 404
 
   @test_4 @get
