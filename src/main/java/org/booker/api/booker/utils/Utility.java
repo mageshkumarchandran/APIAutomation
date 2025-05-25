@@ -49,7 +49,8 @@ public class Utility {
         return requestMap;
     }
     /**  This function update teh key value in request file  */
-    public Map<String, Object> updateRecordInBookingReq(Map<String, Object> jsonMap, String key, String value) throws JsonProcessingException {
+    public Map<String, Object> updateRecordInBookingReq(Map<String, Object> jsonMap, String key, String value)
+    {
         ObjectMapper mapper = new ObjectMapper();
         Object parsedValue = null;
         try {
@@ -62,12 +63,14 @@ public class Utility {
     }
 
     /**  This function delete the  key in request file  */
-    public static Map<String, Object> deleteRecordInBookingReq(Map<String, Object> jsonMap, String key) throws JsonProcessingException {
+    public static Map<String, Object> deleteRecordInBookingReq(Map<String, Object> jsonMap, String key)
+    {
         jsonMap.remove(key);
         return jsonMap;
     }
     /**  This function update the  Dates in request file  */
-    public Map<String, Object> updateDateInBookingReq(Map<String, Object> jsonMap, String type) {
+    public Map<String, Object> updateDateInBookingReq(Map<String, Object> jsonMap, String type)
+    {
         Map<String, Object> bookingDates = (Map<String, Object>) jsonMap.get("bookingdates");
         if (type.equalsIgnoreCase("checkin"))
             date = LocalDate.now();
@@ -79,7 +82,8 @@ public class Utility {
 
     }
     /**  This function remove wrapping key(only) and make response suitable for validation */
-    public static Map<String, Object> removeBookingIDAndObject(Map<String, Object> jsonRecord) {
+    public static Map<String, Object> removeBookingIDAndObject(Map<String, Object> jsonRecord)
+    {
 
         jsonRecord.remove("bookingid");
         Object bookingObj = jsonRecord.remove("booking");

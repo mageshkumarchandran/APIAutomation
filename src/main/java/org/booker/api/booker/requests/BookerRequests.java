@@ -28,6 +28,7 @@ public class BookerRequests implements ApiFlows {
                 .when()
                 .get(actualEndPoint)
                 .then()
+                .log().all()
                 .extract().response();
     }
     @Override

@@ -22,10 +22,11 @@ Feature: Booker API End point validations
 
   @test_3 @delete
   Scenario: Trigger booker DELETE request and validate deletion
-    When Trigger a "delete" request with id "87"
+    When Trigger a "delete" request with id "83"
+     #looks like invalid code.Added validation that accepts this status code based on the application's behavior
     Then Verify the status code is 201
     #This step is to verify record is deleted
-    When Trigger a "get" request with id "87"
+    When Trigger a "get" request with id "83"
     Then Verify the status code is 404
 
   @test_4 @get
@@ -36,7 +37,7 @@ Feature: Booker API End point validations
 
   @test_5 @get_id
   Scenario: Trigger booker GET request by id and validate response schema
-    When Trigger a "GET" request with id "47"
+    When Trigger a "GET" request with id "505"
     Then Verify the status code is 200
     And Verify the "firstname" field is not null in the response
     And Verify the "totalprice" field is not null in the response
@@ -53,11 +54,11 @@ Feature: Booker API End point validations
   @test_7 @negative @invalidToken
   Scenario: Trigger booker invalid token DELETE request and validate status code
     When Trigger a "invalidTokenDELETE" request
-         #looks like invalid code.Added validation that accepts this status code based on the application's behavior
+         #looks like invalid status code returned.Added validation that accepts this status code based on the application's behavior
     Then Verify the status code is 403
 
   @test_8 @negative @noToken
   Scenario: Trigger booker with no token  DELETE request and validate status code
     When Trigger a "noTokenDELETE" request
-         #looks like invalid code.Added validation that accepts this status code based on the application's behavior
+         #looks like invalid status code returns.Added validation that accepts this status code based on the application's behavior
     Then Verify the status code is 403
