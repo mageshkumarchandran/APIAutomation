@@ -25,16 +25,18 @@ public class Utility {
             throw new RuntimeException("Failed to load config.properties file", e);
         }
     }
-
+    /**  This function returns the property from config file  */
     public static String getProperty(String key) {
         return properties.getProperty(key);
     }
 
+    /**  This function returns token from response  */
     public static String getAuthToken(Response response) {
 
         return response.getBody().jsonPath().get("token");
     }
 
+    /**  This function convert request json file to map  */
     public Map<String, Object> returnJsonAsMap() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -46,6 +48,7 @@ public class Utility {
 
         return requestMap;
     }
+    /**  This function update teh key value in request file  */
     public Map<String, Object> updateRecordInBookingReq(Map<String, Object> jsonMap, String key, String value) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Object parsedValue = null;
@@ -58,10 +61,12 @@ public class Utility {
         return jsonMap;
     }
 
+    /**  This function delete the  key in request file  */
     public static Map<String, Object> deleteRecordInBookingReq(Map<String, Object> jsonMap, String key) throws JsonProcessingException {
         jsonMap.remove(key);
         return jsonMap;
     }
+    /**  This function update the  Dates in request file  */
     public Map<String, Object> updateDateInBookingReq(Map<String, Object> jsonMap, String type) {
         Map<String, Object> bookingDates = (Map<String, Object>) jsonMap.get("bookingdates");
         if (type.equalsIgnoreCase("checkin"))
@@ -73,6 +78,7 @@ public class Utility {
         return bookingDates;
 
     }
+    /**  This function remove wrapping key(only) and make response suitable for validation */
     public static Map<String, Object> removeBookingIDAndObject(Map<String, Object> jsonRecord) {
 
         jsonRecord.remove("bookingid");

@@ -57,4 +57,4 @@ Feature: Booker API End point validations
   @test_8 @negative @noToken
   Scenario: Trigger booker invalid token DELETE request and validate status code
     When Trigger a "noTokenDELETE" request.
-    Then Verify the status code is 404
+    Then Verify the status code is 403

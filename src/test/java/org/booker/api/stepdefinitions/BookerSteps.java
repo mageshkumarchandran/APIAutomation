@@ -38,7 +38,7 @@ public class BookerSteps {
         else if (type.contains("invalidToken"))
             responseBody = bookerRequests.delete("7", "invalid");
         else if (type.contains("noToken"))
-            responseBody = bookerRequests.delete("", "invalid");
+            responseBody = bookerRequests.delete("9", "");
         else
             responseBody = bookerRequests.get("");
     }
