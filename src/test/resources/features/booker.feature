@@ -4,7 +4,7 @@ Feature: Booker API End point validations
   @test_1 @post
   Scenario: Trigger booker POST request and validate response
     Given Read the request json file
-    When Trigger a "POST" request.
+    When Trigger a "POST" request
     Then Verify the status code is 200
     And Verify the response with request body
 
@@ -22,15 +22,15 @@ Feature: Booker API End point validations
 
   @test_3 @delete
   Scenario: Trigger booker DELETE request and validate deletion
-    When Trigger a "delete" request with id "95"
+    When Trigger a "delete" request with id "97"
     Then Verify the status code is 201
     #This step is to verify record is deleted
-    When Trigger a "get" request with id "95"
+    When Trigger a "get" request with id "97"
     Then Verify the status code is 404
 
   @test_4 @get
   Scenario: Trigger booker GET request and validate response is not null
-    When Trigger a "GET" request.
+    When Trigger a "GET" request
     Then Verify the status code is 200
     And Verify the response is not empty
 
@@ -46,15 +46,18 @@ Feature: Booker API End point validations
   Scenario: Trigger booker invalid POST request and validate status code
     Given Read the request json file
     When Delete "firstname" from request file
-    When Trigger a "invalidPOST" request.
+    When Trigger a "invalidPOST" request
+     #looks like invalid code.Added validation that accepts this status code based on the application's behavior
     Then Verify the status code is 500
 
   @test_7 @negative @invalidToken
   Scenario: Trigger booker invalid token DELETE request and validate status code
-    When Trigger a "invalidTokenDELETE" request.
+    When Trigger a "invalidTokenDELETE" request
+         #looks like invalid code.Added validation that accepts this status code based on the application's behavior
     Then Verify the status code is 403
 
   @test_8 @negative @noToken
-  Scenario: Trigger booker invalid token DELETE request and validate status code
-    When Trigger a "noTokenDELETE" request.
+  Scenario: Trigger booker with no token  DELETE request and validate status code
+    When Trigger a "noTokenDELETE" request
+         #looks like invalid code.Added validation that accepts this status code based on the application's behavior
     Then Verify the status code is 403

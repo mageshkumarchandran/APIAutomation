@@ -28,7 +28,7 @@ public class BookerSteps {
     public void read_the_request_json_file() throws IOException {
         requestData = utility.returnJsonAsMap();
     }
-    @When("Trigger a {string} request.")
+    @When("Trigger a {string} request")
     public void trigger_a_request(String type) throws JsonProcessingException {
         if (type.equalsIgnoreCase("post"))
             responseBody = bookerRequests.post(requestData);
